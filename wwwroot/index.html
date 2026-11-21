@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>C&amp;C Treasure Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="scroll">
+        <header>
+            <h1>Castles &amp; Crusades</h1>
+            <p class="subtitle">Treasure Generator</p>
+            <p class="flourish">&#10087; Welcome, Castle Keeper &#10087;</p>
+        </header>
+
+        <form id="treasure-form">
+            <fieldset>
+                <legend>Treasure level</legend>
+                <label class="check">
+                    <input type="checkbox" id="random" name="random">
+                    Roll a random treasure level (1&ndash;18)
+                </label>
+                <label class="field" id="level-field">
+                    Choose a level
+                    <select id="level" name="level">
+                        <option value="0">0 &ndash; Nil, no treasure</option>
+                    </select>
+                </label>
+            </fieldset>
+
+            <fieldset>
+                <legend>Where is it found?</legend>
+                <label class="check">
+                    <input type="checkbox" id="lair" name="lair" checked>
+                    In the monster's lair
+                    <small>The coin multiplier only applies in a lair</small>
+                </label>
+                <label class="check">
+                    <input type="checkbox" id="hoard" name="hoard">
+                    It is the monster's hoard
+                    <small>&times;100 gold, double gems, extraordinary and magic items</small>
+                </label>
+            </fieldset>
+
+            <fieldset>
+                <legend>Castle Keeper's settings</legend>
+                <label class="field">
+                    Chance for a magic weapon to be sentient
+                    <span class="percent"><input type="number" id="sentient" name="sentient" min="0" max="100" value="0" inputmode="numeric"> %</span>
+                </label>
+                <label class="check">
+                    <input type="checkbox" id="show-log" name="showLog">
+                    Show every die roll
+                </label>
+            </fieldset>
+
+            <button type="submit" id="roll-button" disabled>Summoning the dice...</button>
+        </form>
+
+        <section id="output" aria-live="polite" hidden></section>
+    </main>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
