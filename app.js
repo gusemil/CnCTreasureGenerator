@@ -1,10 +1,8 @@
-// Page logic for the treasure generator. All rolling happens in the C# treasure code, which is
-// compiled to WebAssembly and runs here in the browser (TreasureApi.cs). This file only reads
-// the options, calls the C# code and prints the result.
+"use strict";
 
-import { dotnet } from "./_framework/dotnet.js";
+// Page logic for the treasure generator. All rolling happens in the treasure code in js/
+// (TreasureGenerator in js/treasure.js). This file only reads the options, rolls and prints the result.
 
-const MAX_TREASURE_LEVEL = 18;
 const SETTINGS_KEY = "cncTreasureSettings";
 
 const form = document.getElementById("treasure-form");
@@ -17,10 +15,7 @@ const showLogBox = document.getElementById("show-log");
 const rollButton = document.getElementById("roll-button");
 const output = document.getElementById("output");
 
-const ROLL_LABEL = "Roll for Treasure";
-
 let lastResult = null;
-let treasureApi = null;
 
 for (let level = 1; level <= MAX_TREASURE_LEVEL; level++) {
     levelSelect.add(new Option(String(level), String(level)));
@@ -74,29 +69,13 @@ function readOptions() {
 
 // ---------- Rolling ----------
 
-// Starts the .NET runtime in the browser and finds the exported C# methods
-async function loadTreasureApi() {
-    try {
-        const { getAssemblyExports, getConfig } = await dotnet.create();
-        const exports = await getAssemblyExports(getConfig().mainAssemblyName);
-        treasureApi = exports.CnCTreasureGenerator.TreasureApi;
-        rollButton.disabled = false;
-        rollButton.textContent = ROLL_LABEL;
-    } catch (error) {
-        rollButton.textContent = "The dice could not be found";
-        showError("The treasure tables failed to load: " + error.message);
-    }
-}
-
 function rollTreasure(event) {
     event.preventDefault();
-    if (!treasureApi) return;
     const options = readOptions();
     saveSettings(options);
 
     try {
-        const json = treasureApi.Roll(options.level, options.random, options.lair, options.hoard, options.sentient);
-        lastResult = JSON.parse(json);
+        lastResult = TreasureGenerator.roll(options);
         render(lastResult, options.showLog);
     } catch (error) {
         showError("The dice went astray: " + error.message);
@@ -117,10 +96,7 @@ function el(tag, className, text) {
     return node;
 }
 
-function gp(value) {
-    return value.toLocaleString("en-US") + " gp";
-}
-
+// gp() formatting comes from js/treasure.js
 function gpSpan(value) {
     return el("span", "gp", gp(value));
 }
@@ -236,4 +212,3 @@ updateDisabledStates();
 randomBox.addEventListener("change", updateDisabledStates);
 lairBox.addEventListener("change", updateDisabledStates);
 form.addEventListener("submit", rollTreasure);
-loadTreasureApi();

@@ -35,7 +35,7 @@
             <fieldset>
                 <legend>Where is it found?</legend>
                 <label class="check">
-                    <input type="checkbox" id="lair" name="lair" checked>
+                    <input type="checkbox" id="lair" name="lair">
                     In the monster's lair
                     <small>The coin multiplier only applies in a lair</small>
                 </label>
@@ -58,12 +58,24 @@
                 </label>
             </fieldset>
 
-            <button type="submit" id="roll-button" disabled>Summoning the dice...</button>
+            <button type="submit" id="roll-button">Roll for Treasure</button>
         </form>
 
         <section id="output" aria-live="polite" hidden></section>
     </main>
 
-    <script type="module" src="app.js"></script>
+    <!-- Treasure rules (order matters: later files use the earlier ones) -->
+    <script src="js/dice.js"></script>
+    <script src="js/sub-rolls.js"></script>
+    <script src="js/sentient-items.js"></script>
+    <script src="js/scroll-spells.js"></script>
+    <script src="js/extraordinary-items.js"></script>
+    <script src="js/magic-items.js"></script>
+    <script src="js/armor-and-shields.js"></script>
+    <script src="js/misc-magic.js"></script>
+    <script src="js/rings-rods-cursed-artifacts.js"></script>
+    <script src="js/treasure.js"></script>
+    <!-- Page -->
+    <script src="app.js"></script>
 </body>
 </html>
